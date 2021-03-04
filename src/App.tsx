@@ -1,24 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {RootReducerType} from './Store'
+import {fetchPokemonData} from './actions/PokemonActions'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from 'react-bootstrap/Button';
+import InputGroup from 'react-bootstrap/InputGroup'
+import FormControl from 'react-bootstrap/FormControl'
 
 function App() {
+  const [pokemonName, setpokemonName] = useState("")
+  const pokemonReducer = useSelector((state:RootReducerType) => state.PokemonReducer)
+  const dispatch = useDispatch()
+
+  const handlePokemonName = (event: React.ChangeEvent<HTMLInputElement>) => setpokemonName(event.target.value)
+  const searchButtonTapped = () => {
+    dispatch(fetchPokemonData(pokemonName))
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div style={{marginTop:'400px', width:'75%', margin: '3rem auto'}}>
+        <div style={{textAlign: 'center', justifyContent:'center'}}>
+        <InputGroup className="mb-3" style={{display: 'inline'}}>
+          <FormControl
+            style={{width:'200px', display: 'inline-block'}}
+            value={pokemonName}
+            onChange={handlePokemonName}
+            aria-label="Default"
+            aria-describedby="inputGroup-sizing-default"
+          />
+        </InputGroup>
+          {/* <input style={{marginRight:'5px'}} value={pokemonName} onChange={handlePokemonName} /> */}
+          <Button style={{display: 'inline', marginLeft:'3px', marginBottom:'3px'}} variant="primary" onClick={searchButtonTapped}>검색</Button>
+          {pokemonReducer.success && <div>
+            {/* <p>{pokemonName}</p>
+            {pokemonReducer.pokemon?.abilities.map((ability)=> {
+              return <div><p>{ability.ability.name}</p>
+              <p>{ability.slot}</p></div>
+            })} */}
+            <img src={pokemonReducer.pokemon?.sprites.front_default} width='200px'/>
+          </div>}
+        </div>
+      </div>
     </div>
   );
 }
