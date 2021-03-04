@@ -1,5 +1,5 @@
 # 타입스크립트 연습 - 포켓몬 프로젝트 
-![Pokemon](./public/pokemon.gif)
+<img src="./public/pokemon.gif" width="40%">
 #
 > 💻 프로젝트 소개
 ------------
